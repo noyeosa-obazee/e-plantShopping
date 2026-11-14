@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { addItem } from './CartSlice';
-import { useDispatch } from 'react-redux';
+import { addItem, removeItem, updateQuantity } from './CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function ProductList({ onHomeClick }) {
+    const cartItems = useSelector(state => state.cart.items);
     const dispatch = useDispatch()
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
@@ -266,6 +267,31 @@ function ProductList({ onHomeClick }) {
           [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
         }));
       };
+
+    //   const handleRemoveFromCart = (product) => {
+    //     dispatch(removeItem(product)); // Dispatch the action to add the product to the cart (Redux action)
+      
+    //     setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
+    //       ...prevState, // Spread the previous state to retain existing entries
+    //       [product.name]: false, // Set the current product's name as a key with value 'false' to remove it from the cart
+    //     }));
+    //   };
+
+    //   const handleIncrementQuantity = (product) => {
+    //     dispatch(updateQuantity({name: product.name, quantity: product.quantity + 1}))
+    //   };
+
+    //   const handleDecrementQuantity = (product) => {
+    //     if (product.quantity > 1) {
+    //    dispatch(updateQuantity({name: product.name, quantity: product.quantity - 1}))
+    //     } else {
+    //         dispatch(removeItem(product.name))
+    //     }
+    //   };
+
+      const calculateTotalQuantity = () => { 
+        return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+     };
       
     return (
         <div>
